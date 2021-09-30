@@ -1,0 +1,3 @@
+[submodule "joe-sharp-dotfiles"]
+	path = joe-sharp-dotfiles
+	url = https://github.com/joe-sharp/dotfiles
