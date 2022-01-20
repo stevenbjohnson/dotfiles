@@ -1,110 +1,165 @@
-##### Aliases #####
-alias dog='less -FX'
-alias lll='exa -lhgH'
-alias w3m='w3m -sixel'
-alias www='w3m'
-alias arst='asdf'
-function colordiff () { diff -u $@ | diff-so-fancy }
-function httpcat() { INPUT=$@ && curl https://http.cat/$INPUT.jpg | imgcat }
-function rubo() { if [ -f Gemfile ]; then bundle exec rubocop $@; else rubocop $@; fi }
-function b() { if [ -f Gemfile ]; then bundle exec $@; else $@; fi }
-                # avoid loop          # force columns      # preserve color hack          # truncate output
-function cd() { builtin cd -P "$@" && COLUMNS=$(tput cols) script -q /dev/null ls -GaFC | head -n $(tput lines) }
-function mla()
-{
-  if [[ "$PWD" == *linter-configs ]]
-  then mega-linter-runner
-  else mega-linter-runner -e 'MEGALINTER_CONFIG=https://raw.githubusercontent.com/joe-sharp/linter-configs/main/.mega-linter.yml'
-  fi
-}
+### My Path ###
+export PATH=$HOME/bin:/usr/local/opt/postgresql@9.6/bin/:$PATH
 
-### git and github ###
-alias gdst='git diff stash@{0}^ stash@{0}'
-alias gai='git add -p'
-alias gbc='git branch-cleanup'
-alias gpim='git pull && git pull --no-rebase origin master'
-alias gurd='git update-ref -d'
-alias gpn='git push --no-verify'
-alias gcob='git checkout -b'
-alias gs='git status'
-alias gsc="$HOME/bin/gsc"
+### My Aliases ###
+
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH="/Users/stevenjohnson/.oh-my-zsh"
+
+# Set name of the theme to load --- if set to "random", it will
+# load a random theme each time oh-my-zsh is loaded, in which case,
+# to know which specific one was loaded, run: echo $RANDOM_THEME
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# ZSH_THEME=random
+
+# Set list of themes to pick from when loading at random
+# Setting this variable when ZSH_THEME=random will cause zsh to load
+# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
+# If set to an empty array, this variable will have no effect.
+# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion.
+# Case-sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# You can set one of the optional three formats:
+# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# or set a custom format using the strftime function format specifications,
+# see 'man strftime' for details.
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load?
+# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+
 alias gh='GITHUB_TOKEN=$(/usr/bin/sudo cat ~/.secrets/gh) gh'
 alias ghv='gh pr view'
 alias ghw='gh pr view --web'
 alias ghc='gh pr checks'
 alias ghd='gh pr diff'
-alias ghm='gh pr merge && gl'
+alias ghm='gh pr merge && gpl'
 alias ghs='gh pr status'
-function gppr() { if [ -f bin/gppr ]; then bin/gppr; else gh pr create -a joe-sharp; fi }
+function gppr() { if [ -f bin/gppr ]; then bin/gppr; else gh pr create -a stevenbjohnson; fi }
 
-### Docker ###
-alias drm='docker rm'
-alias drma="docker rm $(docker ps -q -f status=exited)"
+source /usr/local/bin/antigen.zsh
 
-### Minitest ###
-alias etest='ruby -r minitest/pride *_test.rb'
-alias ewatch='watch -n 5 ruby *_test.rb'
-
-##### Applications #####
-### The Fuck?! ###
-eval $(thefuck --alias)
-eval $(thefuck --alias FUCK)
-eval $(thefuck --alias oops)
-
-### NVM ###
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && . "$NVM_DIR/bash_completion"
-
-### antigen (ZSH Plugin Manager) ###
-ANTIGEN_CACHE=$HOME/.antigen/init-0${TERM_PROGRAM}.zsh
-source "/usr/local/bin/antigen.zsh"
+# Load the oh-my-zsh's library.
 antigen use oh-my-zsh
-antigen bundle arialdomartini/oh-my-git
+
 antigen bundle git
-antigen bundle ruby
-antigen bundle thefuck
-antigen bundle colored-man-pages
-antigen bundle command-not-found
-antigen bundle man
-antigen bundle MichaelAquilina/zsh-you-should-use
+antigen bundle arialdomartini/oh-my-git
 antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zdharma/zsh-diff-so-fancy
-if (( ${+TERM_PROGRAM} ));
-then
-  antigen theme https://gist.github.com/5b0c67179aa076ff53e7c03c4191eec3 joe-style
-  export omg_ungit_prompt="%B%F{6}%~%f%b 🔮%B%F{233}❯%F{55}❯%F{27}❯%f%b "
-else
-  antigen theme https://gist.github.com/5b0c67179aa076ff53e7c03c4191eec3 remote-style
-  export omg_ungit_prompt="%B%F{6}%~%f%b 🔮%B%F{cyan}❯%F{55}❯%F{27}❯%f%b "
-fi
+antigen bundle zsh-users/zsh-autosuggestions
+antigen bundle chucknorris
+
+# antigen theme robbyrussell
+antigen theme https://gist.github.com/stevenbjohnson/1f8c819b6cf445c04bc70679ea301acc steven-style
+# antigen theme https://gist.github.com/5b0c67179aa076ff53e7c03c4191eec3 joe-style
+export omg_ungit_prompt="%B%F{252}%~%f%b 🌿%B%F{19}❯%F{252}❯%F{22}❯%f%b "
+
 antigen apply
 
-### iTerm2 Shell Integrations ###
-test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+# plugins=(
+#   git
+#   chucknorris
+#   zsh-syntax-highlighting
+#   zsh-autosuggestions
+# )
 
-### ASDF ###
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# get my branches diff using diff-tree
+mydiff ()
+{
+    diff-tree | tee >(pbcopy)
+}
+
+# prompt_context() {
+ # Custom (Random emoji)
+ #  emojis=("⚡️" "🔥" "💀" "👑" "😎" "🐸" "🐵" "🦄" "🌈" "🍻" "🚀" "💡" "🎉" "🔑" "🚦" "🌙")
+  # RAND_EMOJI_N=$(( $RANDOM % ${#emojis[@]} + 1))
+  # prompt_segment black default "${emojis[$RAND_EMOJI_N]} "
+# }
+
+eval "$(rbenv init -)"
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+alias gscf='git diff --name-status master..'
+alias gsnmf="gscf | awk '/^[^D]/{print \$2}'"
+alias gspec="gsnmf | grep '^spec' | xargs bundle exec rspec"
+alias grucop="gsnmf | grep '.rb' | xargs bundle exec rubocop"
+alias be="bundle exec"
+
 . $HOME/.asdf/asdf.sh
+
 . $HOME/.asdf/completions/asdf.bash
 
-### FZF ###
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-export RIPGREP_CONFIG_PATH=$HOME/.config/rg/config
-export FZF_DEFAULT_COMMAND='rg --files'
-export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
-
-### broot ###
-[ -f ~/.config/broot/launcher/bash/br ] && source ~/.config/broot/launcher/bash/br
+[ -s "/Users/stevenjohnson/.scm_breeze/scm_breeze.sh" ] && source "/Users/stevenjohnson/.scm_breeze/scm_breeze.sh"
 
 ### work ###
 [ -f ~/.config/workrc ] && source ~/.config/workrc
 
-##### Override Antigen Plugin Aliases #####
-### git ###
-alias gba="$HOME/bin/gba"
-alias gstd="$HOME/bin/gstd"
-alias gp="git push -u origin HEAD"
-alias gcm='git checkout main || (print $fg_bold[red]This repository is still not using \"main\"!$reset_color && git checkout master)'
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-##### MOTD #####
-if [ "$(w -h | grep "^$(whoami) *s[^ ]* *-"|wc -l)" -eq "1" ]; then /usr/local/bin/neofetch; fi
